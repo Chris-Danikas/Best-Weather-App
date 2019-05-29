@@ -67,15 +67,6 @@ async function displayGetDaily(){
     return {dateExp, tempExp}    
 }
 
-
-
-
-
-
-
-
-
-
 async function chartIt(){
     let data = await displayGetDaily();
     console.log("here it is ", data);
