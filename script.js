@@ -12,7 +12,7 @@ function getTemp(url){
     .then(response => response.json())
     .then(data => {
         console.log(data);
-        temp.innerHTML = data.main.temp + " °C";
+        temp.innerHTML = Math.round(data.main.temp) + " °C";
         desc.innerHTML = data.weather[0].description;
     });
 }
