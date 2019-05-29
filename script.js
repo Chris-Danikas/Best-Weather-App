@@ -7,7 +7,7 @@ let desc = document.getElementById("desc");
 
 window.addEventListener('load', () => {
     getTemp(URL); 
-    displayDaily();   
+    chartIt();   
 });
 
 
@@ -33,9 +33,12 @@ async function getDaily(url){
     return forecast;
 }
 
-async function displayDaily(){
+async function displayGetDaily(){
     let forecast = await getDaily(dailyURL);
     console.log(forecast);
+
+    let dateExp = [];
+    let tempExp = [];
 
     ul = document.createElement("ul");
     forecast.forEach(elem => {
@@ -47,6 +50,10 @@ async function displayDaily(){
 
         let day = regex1.exec(date)[0];
         let hour = regex2.exec(date)[0];
+
+        dateExp.push(hour + " " + day);
+        tempExp.push(elem.main.temp);
+        
         
         let myDate = `${day.slice(0, 3)} ${day.slice(8, 10)} -- ${hour} ||  ${elem.main.temp} °C ${elem.weather[0].description}`;
 
@@ -56,5 +63,51 @@ async function displayDaily(){
     })
 
     document.body.appendChild(ul);
-    
+
+    return {dateExp, tempExp}    
+}
+
+
+
+
+
+
+
+
+
+
+async function chartIt(){
+    let data = await displayGetDaily();
+    console.log("here it is ", data);
+    let ctx = document.getElementById('chart').getContext('2d');
+    let chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+
+        // The data for our dataset
+        data: {
+            labels: data.dateExp,
+            datasets: [{
+                label: 'Tyrnavos Average Temperature in C°',
+                borderColor: 'rgba(255, 250, 250, 0.6)', 
+                data: data.tempExp,
+                fill: false
+                }            
+            ]
+        },
+
+        // Configuration options go here
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        // Include a degree sign in the ticks
+                        callback: function(value, index, values) {
+                            return value + "°"; // ° = alt + 0176
+                        }
+                    }
+                }]
+            }
+        }
+    });
 }
