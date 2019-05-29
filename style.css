@@ -29,3 +29,12 @@ hr{
     width: 30%;
     border-radius: 100%;
 }
+ul{
+    list-style: none;
+}
+li{
+    margin: 1%;
+    padding: 1%;
+    border: 1px solid #e9e9e9;
+    font-weight: 300;
+}
