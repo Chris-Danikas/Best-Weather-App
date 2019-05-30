@@ -7,6 +7,8 @@ let desc = document.getElementById("desc");
 
 window.addEventListener('load', () => {
     getTemp(URL); 
+    //chartIt();
+    displayDaily(dailyURL);
     chartIt();   
 });
 
@@ -15,61 +17,69 @@ function getTemp(url){
     fetch(URL)
     .then(response => response.json())
     .then(data => {
-        console.log(data);
+        //console.log(data);
         temp.innerHTML = Math.round(data.main.temp) + " °C";
         desc.innerHTML = data.weather[0].description;
     })
 }
 
 async function getDaily(url){
-    let forecast = [];
 
     let response = await fetch(url);
     let data = await response.json();
+    console.log("This is the response data : ", data);
 
-    console.log(data);
-    forecast = data.list; 
+    let cityName = data.city.name;
+    let forecast = data.list;
 
-    return forecast;
-}
-
-async function displayGetDaily(){
-    let forecast = await getDaily(dailyURL);
-    console.log(forecast);
-
-    let dateExp = [];
-    let tempExp = [];
-
-    ul = document.createElement("ul");
     forecast.forEach(elem => {
-        let li = document.createElement("li");
-
+        //converting the date to my format
         let date = new Date(elem.dt * 1000);
         let regex1 = /[A-Z]\w+ [A-Z]\w+ \d+/;
         let regex2 = /\d+:00/;
 
         let day = regex1.exec(date)[0];
+        day = day.slice(0, 3) +" "+ day.slice(8, 10);
         let hour = regex2.exec(date)[0];
 
-        dateExp.push(hour + " " + day);
-        tempExp.push(elem.main.temp);
+        let newDate = hour + " " + day;
+        elem.dt_txt = newDate;
+    });
+
+    console.log({cityName, forecast})
+
+    return {cityName, forecast};
+}
+
+async function displayDaily(){
+    let data = await getDaily(dailyURL);
+    
+    ul = document.createElement("ul");
+    data.forecast.forEach(elem => {
+        let li = document.createElement("li");        
         
-        
-        let myDate = `${day.slice(0, 3)} ${day.slice(8, 10)} -- ${hour} ||  ${elem.main.temp} °C ${elem.weather[0].description}`;
+        let myDate = `${elem.dt_txt} ||  ${elem.main.temp} °C ${elem.weather[0].description}`;
 
         let text = document.createTextNode(myDate);
         li.appendChild(text);
         ul.appendChild(li);
     })
 
-    document.body.appendChild(ul);
-
-    return {dateExp, tempExp}    
+    document.body.appendChild(ul);   
 }
 
 async function chartIt(){
-    let data = await displayGetDaily();
-    console.log("here it is ", data);
+    
+    let dataT = await getDaily(dailyURL);
+    let xs = []; 
+    let ysT = [];
+
+    dataT.forecast.forEach(elem => {
+        xs.push(elem.dt_txt);
+        ysT.push(Math.round(elem.main.temp));
+    })
+
+    //console.log("here it is ", data);
     let ctx = document.getElementById('chart').getContext('2d');
     let chart = new Chart(ctx, {
         // The type of chart we want to create
@@ -77,11 +87,11 @@ async function chartIt(){
 
         // The data for our dataset
         data: {
-            labels: data.dateExp,
+            labels: xs,
             datasets: [{
-                label: 'Tyrnavos Average Temperature in C°',
+                label: dataT.cityName + ' Temperature in C°',
                 borderColor: 'rgba(255, 250, 250, 0.6)', 
-                data: data.tempExp,
+                data: ysT,
                 fill: false
                 }            
             ]
