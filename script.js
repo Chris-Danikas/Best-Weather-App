@@ -1,5 +1,6 @@
 const URL = "https://api.openweathermap.org/data/2.5/weather?id=252848&APPID=7d8a1c597d7b9d3b30b5e42ef9fb621c&units=metric";
 const dailyURL = "https://api.openweathermap.org/data/2.5/forecast?id=252848&APPID=7d8a1c597d7b9d3b30b5e42ef9fb621c&units=metric";
+const dailyURLLarisa = "https://api.openweathermap.org/data/2.5/forecast?id=258576&APPID=7d8a1c597d7b9d3b30b5e42ef9fb621c&units=metric";
 //I can also use &lang=el
 
 let temp = document.getElementById("tempElem");
@@ -71,13 +72,21 @@ async function displayDaily(){
 async function chartIt(){
     
     let dataT = await getDaily(dailyURL);
+    //let dataL = await getDaily(dailyURLLarisa);
+
     let xs = []; 
     let ysT = [];
+    //let ysL = [];
 
     dataT.forecast.forEach(elem => {
         xs.push(elem.dt_txt);
         ysT.push(Math.round(elem.main.temp));
     })
+    
+    // dataL.forecast.forEach(elem => {
+    //     ysL.push(Math.round(elem.main.temp));
+    // })
+
 
     //console.log("here it is ", data);
     let ctx = document.getElementById('chart').getContext('2d');
@@ -90,10 +99,18 @@ async function chartIt(){
             labels: xs,
             datasets: [{
                 label: dataT.cityName + ' Temperature in C°',
-                borderColor: 'rgba(255, 250, 250, 0.6)', 
+                borderColor: 'rgba(250, 250, 250, 0.6)', 
                 data: ysT,
                 fill: false
-                }            
+                }
+                
+                // ,
+                // {   
+                // label: dataL.cityName + ' Temperature in C°',
+                // borderColor: 'rgba(0, 250, 250, 0.6)',
+                // data: ysL,
+                // fill: false
+                // }
             ]
         },
 
