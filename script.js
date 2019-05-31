@@ -125,6 +125,30 @@ async function chartIt(){
                         }
                     }
                 }]
+            },
+            layout: {
+                padding: 50
+            },
+            tooltips: {
+
+                // callbacks: {
+                //     label: function(tooltipItem, data) {
+                //         //https://www.chartjs.org/docs/latest/configuration/tooltip.html  sta callbacks
+                //         var label = data.datasets[tooltipItem.datasetIndex].label;
+                //         label = 'shit';
+
+                //         return label;
+                //     }
+                // },
+
+                bodyFontColor: 'rgba(0, 0, 0, 1)',
+                bodyFontSize: 13,
+                backgroundColor: 'rgba(250, 250, 250, 0.6)',
+
+                titleAlign: 'center',  // ta docs exoun : _titleAlign  enw to swsto einai titleAlign
+                titleMarginBottom: 10,
+                titleFontColor: 'rgba(0, 0, 0, 1)',
+                titleFontSize: 15,             
             }
         }
     });
