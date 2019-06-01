@@ -124,8 +124,9 @@ async function chartIt(){
                             return value + "°"; // ° = alt + 0176
                         }
                     }
-                }]
+                }],
             },
+            
             layout: {
                 padding: 50
             },
@@ -135,7 +136,7 @@ async function chartIt(){
                     label: function(tooltipItem, data) {
                         //https://www.chartjs.org/docs/latest/configuration/tooltip.html  sta callbacks
                         let label = data.datasets[tooltipItem.datasetIndex].label;
-                        label = 'Temperature in ' + dataT.cityName + ': ' + Math.round(dataT.forecast[tooltipItem.index].main.temp) + ' || ' + dataT.forecast[tooltipItem.index].weather[0].description;
+                        label = 'Temperature in ' + dataT.cityName + ': ' + Math.round(dataT.forecast[tooltipItem.index].main.temp) + ' -- ' + dataT.forecast[tooltipItem.index].weather[0].description;
 
                         return label;
                     },
