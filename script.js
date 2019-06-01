@@ -131,15 +131,20 @@ async function chartIt(){
             },
             tooltips: {
 
-                // callbacks: {
-                //     label: function(tooltipItem, data) {
-                //         //https://www.chartjs.org/docs/latest/configuration/tooltip.html  sta callbacks
-                //         var label = data.datasets[tooltipItem.datasetIndex].label;
-                //         label = 'shit';
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        //https://www.chartjs.org/docs/latest/configuration/tooltip.html  sta callbacks
+                        let label = data.datasets[tooltipItem.datasetIndex].label;
+                        label = 'Temperature in ' + dataT.cityName + ': ' + Math.round(dataT.forecast[tooltipItem.index].main.temp) + ' || ' + dataT.forecast[tooltipItem.index].weather[0].description;
 
-                //         return label;
-                //     }
-                // },
+                        return label;
+                    },
+                    // footer: function(tooltipItem, data) {
+                    //     let footer = data.datasets[tooltipItem.datasetIndex].footer;
+                    //     footer = dataT.forecast[tooltipItem.index].weather[0].description;   *doesn't work
+                    //     return footer;
+                    // }
+                },
 
                 bodyFontColor: 'rgba(0, 0, 0, 1)',
                 bodyFontSize: 13,
