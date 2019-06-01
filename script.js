@@ -123,8 +123,18 @@ async function chartIt(){
                         callback: function(value, index, values) {
                             return value + "°"; // ° = alt + 0176
                         }
+                    },
+                    gridLines: {
+                        //display: false,
+                        color: 'rgba(0, 0, 50, 0.2)',
                     }
                 }],
+                xAxes: [{
+                    gridLines: {
+                        //display: false,
+                        color: 'rgba(0, 0, 50, 0.2)',
+                    }
+                }]
             },
             
             layout: {
